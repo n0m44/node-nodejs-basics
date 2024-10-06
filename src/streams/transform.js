@@ -1,5 +1,13 @@
+import * as stream from 'stream';
+
 const transform = async () => {
-    // Write your code here 
+    const transformStream = new stream.Transform({
+        transform(chunk, enc, callback) {
+            callback(null, Buffer.from(chunk.toString().split('').reverse().join('')));
+        }
+    });
+
+    stream.pipeline(process.stdin, transformStream, process.stdout, () => {});
 };
 
 await transform();
